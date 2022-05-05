@@ -72,53 +72,50 @@
 #             degree = find_tester_pos(room)
 #         answer.append(degree)
 #     return answer
-dest_list = [(0, 1), (1, 0), (-1, 0), (0, -1)]
-visited = [[0] * 5 for _ in range(0, 5)]
+def dfs(room, visited, tester_pos, r, c):
 
-
-def near_by_tester(room, i, j, tester_pos):
     keep_dis = 1
-    t_r = tester_pos[0]
-    t_c = tester_pos[1]
 
-    # check next destination.
+    dest_list = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+
+    visited[r][c] = 1
     for dest in dest_list:
-        i = t_r + dest[0]
-        j = t_c + dest[1]
-        length = abs(t_r - i) + abs(t_c - j)
-        if (0 <= i < 5) and (0 <= j < 5):
-            if length <= 2:
-                if not(visited[i][j]):
-                    visited[i][j] = 1
-                    if room[i][j] == 'P':
-                        keep_dis = 0
-                    elif room[i][j] == 'O':
-                        keep_dis = near_by_tester(room, i, j, tester_pos)
-                    else:
-                        keep_dis = 1
-        if not (keep_dis):
+        if keep_dis == 0:
             break
-
+        r = r + dest[0]
+        c = c + dest[1]
+        in_room = (0 <= r < 5) and (0 <= c < 5)
+        dis = abs(r - tester_pos[0]) + abs(c - tester_pos[1])
+        if in_room and visited[r][c] == 0 and dis <= 2:
+            if room[r][c] == "P":
+                return 0
+            if room[r][c] == "O":
+                keep_dis = dfs(room, visited, tester_pos, r, c)
+        else:
+            continue
     return keep_dis
 
 
 def solution(places):
     answer = []
-    keep_dis = 1
+
+    ## room travel
     for room in places:
         visited = [[0] * 5 for _ in range(0, 5)]
-        # find tester
-        for i in range(0, 5):
-            for j in range(0, 5):
-                if room[i][j] == 'P':
-                    # check tester nearby tester
-                    visited[i][j] = 1
-                    keep_dis = near_by_tester(room, i, j, (i, j))
-                    if not (keep_dis):
-                        break
-            if not (keep_dis):
+        keep_dis = 1
+        for r in range(0, 5):
+            if keep_dis == 0:
                 break
+
+            for c in range(0, 5):
+                if room[r][c] == "P":
+                    tester_pos = (r, c)
+                    keep_dis = dfs(room, visited, tester_pos, r, c)
+                    if keep_dis == 0:
+                        break
         answer.append(keep_dis)
 
     return answer
-print(solution([["POOOP","OXXOX","OPXPX","OOXOX","POXXP"],["POOPX", "OXPXP", "PXXXO", "OXXXO", "OOOPP"]]))
+
+print(solution([["POOOP","OXXOX","OPXPX","OOXOX","POXXP"],["POOPX", "OXPXP", "PXXXO", "OXXXO", "OOOPP"],
+                ["PXOPX", "OXOXP", "OXPOX", "OXXOP", "PXPOX"], ["OOOXX", "XOOOX", "OOOXX", "OXOOX", "OOOOO"], ["PXPXP", "XPXPX", "PXPXP", "XPXPX", "PXPXP"]]))
