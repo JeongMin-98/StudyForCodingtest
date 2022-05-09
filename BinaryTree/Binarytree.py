@@ -53,9 +53,51 @@ class BinaryTree:
             else:
                 self.search_tree(current.left, data)
 
+    def print_tree_traversal(self, node=None, mode='inorder'):
+
+        if node is None:
+            current = self.root
+        else:
+            current = node
+        if mode == 'inorder':
+            print("print Inorder Traversal")
+            self.inorder(current)
+        if mode == 'postorder':
+            print("print Postorder Traversal")
+            self.postorder(current)
+        if mode == 'preorder':
+            print("print Preorder Traversal")
+            self.preorder(current)
+
+    def inorder(self, node):
+
+        if node:
+            self.inorder(node.left)
+            print(node.data)
+            self.inorder(node.right)
+        else:
+            return
+
+    def preorder(self, node):
+        if node:
+            print(node.data)
+            self.preorder(node.left)
+            self.preorder(node.right)
+        else:
+            return
+
+    def postorder(self, node):
+        if node:
+            self.postorder(node.left)
+            self.postorder(node.right)
+            print(node.data)
+        else:
+            return
+
+
     def print_tree(self, node=None):
         """
-        해당 노드로 부터 자식 노드 들을 출력
+        root로부터 전체 트리 출력
         :param node:
         :return:
         """
@@ -86,7 +128,6 @@ class BinaryTree:
 
 
 
-
 bt = BinaryTree()
 
 # lst = [3, 6, 12, 14]
@@ -98,7 +139,8 @@ bt.add(17);
 bt.add(3);
 bt.add(6);
 bt.add(22);
-bt.add(5);
-bt.add(7);
+# bt.add(5);
+# bt.add(7);
 bt.add(20);
+bt.print_tree_traversal(mode = "inorder")
 bt.print_tree()
