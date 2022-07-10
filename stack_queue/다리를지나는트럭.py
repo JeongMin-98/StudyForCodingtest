@@ -15,9 +15,10 @@
     대기 트럭
     wait_truck = []
 
-    bridege_length > len(pass_truck) 이어야 pass_truck에 들어갈 수 있음
+    bridge_length > len(pass_truck) 이어야 pass_truck에 들어갈 수 있음
     즉 다리를 건널 수 있음
 
+    bridge_length 만큼 차가 이동하여 건넌다.
 """
 
 def solution(bridge_length, weight, truck_weights):
@@ -29,17 +30,33 @@ def solution(bridge_length, weight, truck_weights):
     total_truck = len(truck_weights)
     time = 1
 
-    while 1:
-        if len(pass_truck) < bridge_length:
-            if len(wait_truck) == 0:
-                arrived_truck.append(pass_truck.pop(0))
-            if sum(pass_truck) < weight:
-                pass_truck.append(wait_truck.pop(0))
+    while len(arrived_truck) < total_truck:
+
+        if len(wait_truck) > 0:
+            temp = wait_truck.pop(0)
+            if len(pass_truck) == 0:
+                pass_truck.append(temp)
             else:
-                pass
+                total_pass = sum(pass_truck) + temp
+                if total_pass < weight:
+                    if len(pass_truck) < bridge_length:
+                        pass_truck.append(temp)
+                    else:
+                        wait_truck.insert(0, temp)
+                        arrived_truck.append(pass_truck.pop(0))
+                else:
+                    wait_truck.insert(0, temp)
+                    if len(pass_truck) < bridge_length:
+                        time += bridge_length
+                        arrived_truck.append(pass_truck.pop(0))
+                    else:
+                        arrived_truck.append(pass_truck.pop(0))
         else:
 
+        print("time {}, arrived {}, pass {}, wait {}".format(time, arrived_truck, pass_truck, wait_truck))
 
+
+    answer = time
     return answer
 
 print(solution(2, 10, [7,4,5,6]))

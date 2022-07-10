@@ -53,6 +53,7 @@ class BinaryTree:
             else:
                 self.search_tree(current.left, data)
 
+
     def print_tree_traversal(self, node=None, mode='inorder'):
 
         if node is None:
@@ -126,21 +127,85 @@ class BinaryTree:
         :return: (remove node)
         """
 
+        if self.root is None:
+            print('empty Tree')
+            return
 
+        success_remove_yn = self.search_remove_node(None, self.root, data)
+
+        return success_remove_yn
+
+    def search_remove_node(self, parent=None, current=None, data=None):
+
+        if data < current.data:
+            return self.search_remove_node(current, current.left, data)
+        elif data > current.data:
+            return self.search_remove_node(current, current.right, data)
+        elif data == current.data:
+            # Only one child
+            if parent is None and current == self.root:
+                min_node = self.find_min_node_data()
+                right = self.root.right
+                self.root = min_node
+                self.root.right = right
+                return 1
+            else:
+                if data < parent.data:
+                    if current.left is None:
+                        parent.left = current.right
+                        del current
+                        return True
+                    elif current.right is None:
+                        parent.left = current.left
+                        del current
+                        return True
+                elif data > parent.data:
+                    if current.left is None:
+                        parent.right = current.right
+                        del current
+                        return True
+                    elif current.right is None:
+                        parent.right = current.left
+                        del current
+                        return True
+            min_node = self.find_min_node_data(current)
+            right = current.right
+            current = min_node
+            current.right = right
+            del current
+            return True
+
+        else:
+            return False
+
+    def find_min_node_data(self, node=None):
+
+        if node is None:
+            node = self.root
+
+        if self.root is None:
+            print('empty tree')
+
+        current = node
+        while current.left is not None:
+            current = current.left
+
+        return current
 
 bt = BinaryTree()
 
 # lst = [3, 6, 12, 14]
 # for i in range(0, len(lst)):
 #     root.add(lst[i])
-bt.add(9);
-bt.add(4);
-bt.add(17);
-bt.add(3);
-bt.add(6);
-bt.add(22);
-# bt.add(5);
-# bt.add(7);
-bt.add(20);
+bt.add(50)
+bt.add(30)
+bt.add(70)
+bt.add(20)
+bt.add(40)
+bt.add(60)
+bt.add(80)
+bt.remove(20)
+bt.remove(30)
 bt.print_tree_traversal(mode = "inorder")
-bt.print_tree()
+bt.remove(70)
+bt.print_tree_traversal(mode = "inorder")
