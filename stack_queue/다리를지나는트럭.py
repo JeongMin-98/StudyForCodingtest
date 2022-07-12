@@ -20,6 +20,11 @@
 
     bridge_length 만큼 차가 이동하여 건넌다.
 """
+def sum_weight_truck(pass_truck):
+    total_weight = 0
+    for weight, pass_len in pass_truck:
+        total_weight += weight
+    return total_weight
 
 def solution(bridge_length, weight, truck_weights):
     answer = 0
@@ -33,30 +38,35 @@ def solution(bridge_length, weight, truck_weights):
     while len(arrived_truck) < total_truck:
 
         if len(wait_truck) > 0:
-            temp = wait_truck.pop(0)
-            if len(pass_truck) == 0:
-                pass_truck.append(temp)
-            else:
-                total_pass = sum(pass_truck) + temp
-                if total_pass < weight:
-                    if len(pass_truck) < bridge_length:
-                        pass_truck.append(temp)
-                    else:
-                        wait_truck.insert(0, temp)
-                        arrived_truck.append(pass_truck.pop(0))
-                else:
-                    wait_truck.insert(0, temp)
-                    if len(pass_truck) < bridge_length:
-                        time += bridge_length
-                        arrived_truck.append(pass_truck.pop(0))
-                    else:
-                        arrived_truck.append(pass_truck.pop(0))
+            input_truck = wait_truck.pop(0)
+
+        if len(pass_truck) == 0:
+            pass_truck.append([input_truck, bridge_length])
         else:
-
-        print("time {}, arrived {}, pass {}, wait {}".format(time, arrived_truck, pass_truck, wait_truck))
-
+            total_weight = sum_weight_truck(pass_truck) + input_truck
+            # 무게 제한에 따른 통행 유무
+            weight_limit = total_weight <= weight
+            # 다리 위에 있는 트럭의 수에 따른 통행 유무
+            on_limit = len(pass_truck) <= bridge_length
+            pass_yn = weight_limit and on_limit
+            if pass_yn:
+                pass_truck.append([input_truck, bridge_length])
+            else:
+                wait_truck.insert(0, input_truck)
+        for i in range(len(pass_truck)):
+            pass_truck[i][1] -= 1
+        truck_weight, pass_len = pass_truck.pop(0)
+        if pass_len == 0:
+            arrived_truck.append(truck_weight)
+        else:
+            pass_truck.insert(0, [truck_weight, pass_len])
+        time += 1
+        print("time {}, arrived {}, pass {}, wait {}\n".format(time, arrived_truck, pass_truck, wait_truck))
 
     answer = time
     return answer
 
-print(solution(2, 10, [7,4,5,6]))
+
+
+print(solution(100, 100, [10, 10, 10, 10, 10, 10, 10, 10, 10,10]))
+
