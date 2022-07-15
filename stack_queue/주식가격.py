@@ -4,8 +4,6 @@
 
     가격이 떨어지지 않은 기간은 몇초인가 return
 
-    감소하지 않으면 next_price를 increase에 append해주고
-    감소하는 순간 중지한다.
 """
 
 
