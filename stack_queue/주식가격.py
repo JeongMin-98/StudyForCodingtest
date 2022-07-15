@@ -13,33 +13,16 @@
 def solution(prices):
 
     answer = []
-    increase = []
-    past = []
-    n = len(prices)
-    current = None
-    while len(past) < n:
-        if current is None:
-            current = prices.pop(0)
-        if len(prices) > 0:
-            if current <= prices[0]:
-                increase.append(prices.pop(0))
-            else:
-                past.append(current)
-                current = None
-                if len(increase) == 0:
-                    answer.append(1)
-                else:
-                    answer.append(len(increase)+1)
-                    prices = increase + prices
-                    increase = []
-        else:
-            answer.append(len(increase))
-            prices = increase
-            past.append(current)
-            current = None
-            increase = []
-        print("past {}, current {}, prices {},  increase {} ".format(past, current, prices, increase))
 
+    for i in range(0, len(prices)):
+        time = len(prices) - i - 1
+        for j in range(i, len(prices)):
+            if prices[i] > prices[j]:
+                time = j-i
+                break
+        answer.append(time)
+
+    answer.append(0)
     return answer
 
 print(solution([3,4,2,3,3]))
