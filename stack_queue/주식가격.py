@@ -4,61 +4,42 @@
 
     가격이 떨어지지 않은 기간은 몇초인가 return
 
-    # Divide and Conquer (분할 정복)
-
-    [ 2, 3, 2, 3]
-    이후에 1보다 작은 값이 있는 지 확인
-    [2,3] =>  둘 중 작은 값  [0:2]
-    [2,3] => [2: 4]
+    감소하지 않으면 next_price를 increase에 append해주고
+    감소하는 순간 중지한다.
 """
 
 
-def split(next_prices, start, end, key):
-    mid = (end-start) // 2
-    n = end - start + 1
-    if len(next_prices) == 0:
-        return None
-    if len(next_prices) == 1:
-        if key > next_prices[-1]:
-            return 0
-        else:
-            return None
-    if n > 2:
-        print('split!')
-        left_down_index = split(next_prices, start, mid, key)
-        right_down_index = split(next_prices, mid+1, start, key)
-
-    else:
-        print(next_prices[start], next_prices[end])
-        if key > next_prices[start]:
-            return start
-        if key > next_prices[end]:
-            return end
-        return None
-
-    if left_down_index is None and right_down_index is None:
-        return None
-    if left_down_index is None and right_down_index is not None:
-        return right_down_index
-    if left_down_index is not None and right_down_index is None:
-        return left_down_index
-    if left_down_index is not None and right_down_index is not None:
-        return left_down_index
 
 def solution(prices):
 
     answer = []
-
-    for i in range(0, len(prices)):
-        next_prices = prices[i+1:]
-        first_down_index = split(next_prices, 0, len(next_prices)-1, prices[i])
-        if first_down_index is None:
-            time = len(prices) - i - 1
+    increase = []
+    past = []
+    n = len(prices)
+    current = None
+    while len(past) < n:
+        if current is None:
+            current = prices.pop(0)
+        if len(prices) > 0:
+            if current <= prices[0]:
+                increase.append(prices.pop(0))
+            else:
+                past.append(current)
+                current = None
+                if len(increase) == 0:
+                    answer.append(1)
+                else:
+                    answer.append(len(increase)+1)
+                    prices = increase + prices
+                    increase = []
         else:
-            time = first_down_index + 1
+            answer.append(len(increase))
+            prices = increase
+            past.append(current)
+            current = None
+            increase = []
+        print("past {}, current {}, prices {},  increase {} ".format(past, current, prices, increase))
 
-        answer.append(time)
-        print(answer)
     return answer
 
-print(solution([1,2,3,2,3]))
+print(solution([3,4,2,3,3]))
