@@ -12,9 +12,9 @@ def solution(prices):
 
     answer = []
 
-    for i in range(0, len(prices)):
+    for i in range(0, len(prices)-1):
         time = len(prices) - i - 1
-        for j in range(i, len(prices)):
+        for j in range(i+1, len(prices)):
             if prices[i] > prices[j]:
                 time = j-i
                 break
@@ -23,4 +23,3 @@ def solution(prices):
     answer.append(0)
     return answer
 
-print(solution([3,4,2,3,3]))
