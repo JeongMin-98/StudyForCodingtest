@@ -50,7 +50,7 @@ class DoubleLinkedList:
 
     def upper_x(self, x):
         for _ in range(0, x):
-            self.temp = self.temp.top
+            self.temp = self.temp.__top
         return 1
 
     def down_x(self, x):
@@ -61,25 +61,25 @@ class DoubleLinkedList:
     def cut(self):
         cutNode = self.temp
         if self.temp.bot is None:
-            self.temp = self.temp.top
+            self.temp = self.temp.__top
         else:
             self.temp = self.temp.bot
         if cutNode.bot is None:
-            topNode = cutNode.top
+            topNode = cutNode.__top
             topNode.bot = None
             self.last = topNode
             self.memory.append(cutNode)
 
 
 
-        if cutNode.top is None:
+        if cutNode.__top is None:
             botNode = cutNode.bot
             self.head = botNode
             self.memory.append(cutNode)
 
 
-        if cutNode.bot and cutNode.top:
-            topNode = cutNode.top
+        if cutNode.bot and cutNode.__top:
+            topNode = cutNode.__top
             botNode = cutNode.bot
             topNode.bot = botNode
             botNode.top = topNode
@@ -89,16 +89,16 @@ class DoubleLinkedList:
 
     def recovery(self):
         recNode = self.memory.pop()
-        top_recNode = recNode.top
+        top_recNode = recNode.__top
         bot_recNode = recNode.bot
 
         if top_recNode is None:
             recNode.bot = self.head
-            self.head.top = recNode
+            self.head.__top = recNode
             self.head = recNode
         if bot_recNode is None:
             self.last.bot = recNode
-            recNode.top = self.last
+            recNode.__top = self.last
             self.last = recNode
 
         if top_recNode and bot_recNode:

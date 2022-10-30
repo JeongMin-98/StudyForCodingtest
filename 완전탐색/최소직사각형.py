@@ -32,9 +32,16 @@ def solution(sizes):
 
     area = [w * h for w, h in sizes]
     maxsize = max(area)
-
-    answer = find_size(0, 0, sizes, maxsize)
-
+    wallets = [[0]*len(sizes) for _ in range(len(sizes))]
+    minsize = max(area)
+    for i in range(len(sizes)):
+        for j in range(len(sizes)):
+            wallets[i][j] = sizes[i][0] * sizes[j][1]
+        print(wallets[i])
+        if maxsize < min(wallets[i]):
+            if minsize > min(wallets[i]):
+                minsize = min(wallets[i])
+    answer = minsize
     return answer
 
 print(solution([[60, 50], [30, 70], [60, 30], [80, 40]]))

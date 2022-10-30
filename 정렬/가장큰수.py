@@ -1,17 +1,17 @@
-from itertools import permutations
-from functools import reduce
+"""
+
+    0 또는 양의 정수가 주어졌을 떄, 정수를 이어 붙여 만들수 있는 가장 큰 수
 
 
+"""
 def solution(numbers):
     answer = ''
-    n = len(numbers)
-    p = permutations(numbers, n)
+    numbers = list(map(str, numbers))
+    numbers.sort(key=lambda x:x*4, reverse=True)
+    answer = ('').join(numbers)
+    answer = str(int(answer))
 
-    num_p = []
-
-
-    num_p.append(reduce(lambda x, y: (str(x) + str(y))))
-
-    answer = max(num_p)
     return answer
-print(solution([6, 10, 3]))
+
+
+print(solution([0,0,0,0]))
