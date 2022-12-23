@@ -14,9 +14,12 @@ import math
 import sys
 
 
+def insert(src, line, pos):
+    return ''.join([src[:pos], line, src[pos:]])
+
+
 def split(array, size, x0, x1, y0, y1):
     """ array => 영상의 데이터 배열, size는 영상의 크기 ex) 8 = 2**3 size=3 """
-    global area
     if math.log2(size) > 1:
         size = size // 2
         x_mid = x0 + size
@@ -34,24 +37,30 @@ def split(array, size, x0, x1, y0, y1):
             area_value = list(area_value)
             return str(area_value[0])
         else:
-            return [array[x0][y0], array[x0][y1], array[x1][y0], array[x1][y1]]
+            return f'({array[x0][y0]}{array[x0][y1]}{array[x1][y0]}{array[x1][y1]})'
     if lu is None and ru is None and ld is None and rd is None:
         return
-    area.append([lu, ru, ld, rd])
-    return
 
+    result = [lu, ru, ld, rd]
+    count_one = result.count('1')
+    count_zero = result.count('0')
 
-def merge(splited_area):
-    """ 나눠진 영상의 영역에서 겹치는 영상부분을 합치는 함수 """
+    if count_one == 4:
+        return lu
 
-    for i in range(len(splited_area)):
+    if count_zero == 4:
+        return lu
+
+    merge = '()'
+    for r in result:
+        merge = insert(merge, r, -1)
+
+    return merge
 
 
 if __name__ == '__main__':
     N = int(input())
     video = [list(map(int, input())) for _ in range(N)]
 
-    area = []
-    # N = math.log2(N)
-    split(video, N, 0, N - 1, 0, N - 1)
+    area = split(video, N, 0, N - 1, 0, N - 1)
     print(area)
