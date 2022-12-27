@@ -11,49 +11,25 @@
     3. 마지막 도착 계단은 반드시 밟아야 한다.
 
 """
-from collections import deque
 
 
-def on_stair(temp, cnt_of_stair):
-    if temp < cnt_of_stair:
-        return True
-    else:
-        return False
+def solve(stair, cnt_of_stair):
+    stair_score = []
 
+    if cnt_of_stair == 1:
+        return stair[0]
 
-def solve(stair_info, temp_score, cnt_of_stair):
-    i = -1
-    step_one = 0
+    if cnt_of_stair == 2:
+        return max(stair[1], stair[1] + stair[0])
 
-    step = deque()
-    step.append([i, step_one])
+    stair_score.append(stair[0])
+    stair_score.append(max(stair[0] + stair[1], stair[1]))
+    stair_score.append(max(stair[1] + stair[2], stair[0] + stair[2]))
 
-    score = 0
-    while len(step) > 0:
-        temp, step_one = step.popleft()
-        if temp == -1:
-            temp_score[temp + 1] = stair_info[temp + 1]
-            temp_score[temp + 2] = stair_info[temp + 2]
-            step.append([temp + 1, step_one + 1])
-            step.append([temp + 2, step_one])
-            continue
-        if on_stair(temp + 1, cnt_of_stair):
-            if step_one > 3:
-                continue
-            if temp_score[temp + 1] > (temp_score[temp + 1] + stair_info[temp]):
-                continue
+    for i in range(3, cnt_of_stair):
+        stair_score.append(max(stair_score[i - 2] + stair[i], stair_score[i - 3] + stair[i - 1] + stair[i]))
 
-            step.append([temp + 1, step_one + 1])
-            temp_score[temp + 1] += stair_info[temp]
-
-        if on_stair(temp + 2, cnt_of_stair):
-            if temp_score[temp + 2] > (temp_score[temp + 2] + stair_info[temp]):
-                continue
-
-            step.append([temp + 2, 0])
-            temp_score[temp + 2] += stair_info[temp]
-
-    return temp_score[cnt_of_stair - 1]
+    return stair_score[-1]
 
 
 if __name__ == '__main__':
@@ -63,6 +39,4 @@ if __name__ == '__main__':
     for _ in range(N):
         stair.append(int(input()))
 
-    temp_stair = [0] * N
-
-    print(solve(stair, temp_stair, N))
+    print(solve(stair, N))
