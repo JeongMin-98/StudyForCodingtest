@@ -14,20 +14,54 @@
 """
 
 
-def solution(N, K):
+def solution(N, k):
+    num = N
     dp = [0] * (N + 1)
-
+    # 1~N 까지 하는 경우 시간 복잡도 O(N) 공간 복잡도 O(N)
+    for_cnt = 0
     for i in range(2, N + 1):
-
+        for_cnt += 1
         dp[i] = dp[i - 1] + 1
 
-        if i % K == 0:
-            dp[i] = min(dp[i - 1] + 1, dp[i // 4] + 1)
+        if i % k == 0:
+            dp[i] = min(dp[i - 1] + 1, dp[i // k] + 1)
 
-    return dp[N]
+    while_cnt = 0
+    dp = [0] * (N + 1)
+    """ 시간 복잡도는 위 코드에 비해 크게 줄지만, 공간복잡도는 O(N) 이다. """
+    while N > 1:
+        while_cnt += 1
+        if N % k == 0:
+            dp[N // k] = dp[N] + 1
+            N //= k
+        else:
+            dp[N - 1] = dp[N] + 1
+            N -= 1
+
+    print(f'for_loop : {for_cnt} \n while_loop : {while_cnt}')
+
+    cnt = 0
+    last_cnt = 0
+
+    while 1:
+
+        last_cnt += 1
+        target = (num // k) * k
+        cnt += (num - target)
+        num = target
+
+        if num < k:
+            break
+
+        num //= k
+        cnt += 1
+
+    cnt += (num - 1)
+
+    print(f"last_cnt: {last_cnt}")
+    return cnt
 
 
 if __name__ == '__main__':
-    n = int(input())
-    k = int(input())
+    n, k = map(int, input().split())
     print(solution(n, k))
