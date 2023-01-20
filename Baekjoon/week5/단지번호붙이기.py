@@ -18,25 +18,26 @@
 """
 from collections import deque
 
-def solve(arr, N):
 
+def solve(arr, N):
     dx = [1, 0, -1, 0]
     dy = [0, 1, 0, -1]
     apart_name = 1
+    apart_info = dict()
     visited = [[0] * N for _ in range(N)]
     trival = deque([])
-    for y_i, x_values in enumerate(arr):
-        for x_i, value in enumerate(x_values):
+    for y_i in range(N):
+        for x_i in range(N):
             if not visited[y_i][x_i] and arr[y_i][x_i] == 1:
                 visited[y_i][x_i] = 1
                 trival.append([y_i, x_i])
-
+                count = 0
                 while trival:
                     cur_y, cur_x = trival.popleft()
 
                     for x, y in zip(dx, dy):
-                        ny = cur_y+y
-                        nx = cur_x+x
+                        ny = cur_y + y
+                        nx = cur_x + x
                         if visited[ny][nx]:
                             continue
                         if arr[ny][nx] == 0:
@@ -46,14 +47,13 @@ def solve(arr, N):
 
                         visited[ny][nx] = 1
                         arr[ny][nx] = apart_name
+                        count += 1
                         trival.append([ny, nx])
 
+                apart_name += 1
+                apart_info[apart_name] = count
 
-
-
-    return
-
-
+    return apart_name, apart_info
 
 
 if __name__ == '__main__':
@@ -62,6 +62,6 @@ if __name__ == '__main__':
     grid = []
 
     for _ in range(N):
-        grid.append(map(int, input().split()))
+        grid.append(list(map(int, input())))
 
-    solve()
+    print(solve(grid, N))
