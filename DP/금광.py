@@ -28,8 +28,6 @@
 
 """
 
-from collections import defaultdict
-
 
 def in_boundary(i, loc, n):
     start = ((i // n) - 1) * 3
