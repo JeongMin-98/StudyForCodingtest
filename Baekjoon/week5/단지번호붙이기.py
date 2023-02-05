@@ -21,6 +21,7 @@ from heapq import *
 
 
 def dfs(arr, y_idx, x_idx):
+    """  dfs 탐색으로 단지 찾기 """
     global N
     dx = [1, 0, -1, 0]
     dy = [0, 1, 0, -1]
