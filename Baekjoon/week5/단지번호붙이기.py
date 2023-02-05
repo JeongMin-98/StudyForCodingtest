@@ -17,43 +17,44 @@
 
 """
 from collections import deque
+from heapq import *
+
+
+def dfs(arr, y_idx, x_idx):
+    global N
+    dx = [1, 0, -1, 0]
+    dy = [0, 1, 0, -1]
+
+    queue = deque()
+    queue.append([y_idx, x_idx])
+    arr[y_idx][x_idx] = 0
+    cnt = 1
+    while queue:
+        y, x = queue.pop()
+        for ny, nx in zip(dy, dx):
+            ty = y + ny
+            tx = x + nx
+            if ty < 0 or ty >= N or tx < 0 or tx >= N:
+                continue
+            if arr[ty][tx] == 1:
+                arr[ty][tx] = 0
+                cnt += 1
+                queue.append([ty, tx])
+
+    return cnt
 
 
 def solve(arr, N):
-    dx = [1, 0, -1, 0]
-    dy = [0, 1, 0, -1]
-    apart_name = 1
-    apart_info = dict()
+    """ 순서대로 이동할 방향"""
+
     visited = [[0] * N for _ in range(N)]
-    trival = deque([])
-    for y_i in range(N):
-        for x_i in range(N):
-            if not visited[y_i][x_i] and arr[y_i][x_i] == 1:
-                visited[y_i][x_i] = 1
-                trival.append([y_i, x_i])
-                count = 0
-                while trival:
-                    cur_y, cur_x = trival.popleft()
-
-                    for x, y in zip(dx, dy):
-                        ny = cur_y + y
-                        nx = cur_x + x
-                        if visited[ny][nx]:
-                            continue
-                        if arr[ny][nx] == 0:
-                            continue
-                        if 0 > ny or ny >= N or 0 > nx or nx >= N:
-                            continue
-
-                        visited[ny][nx] = 1
-                        arr[ny][nx] = apart_name
-                        count += 1
-                        trival.append([ny, nx])
-
-                apart_name += 1
-                apart_info[apart_name] = count
-
-    return apart_name, apart_info
+    """ arr를 0, 0부터 차례대로 방문"""
+    town = []
+    for y in range(N):
+        for x in range(N):
+            if arr[y][x] == 1:
+                heappush(town, dfs(arr, y, x))
+    return town
 
 
 if __name__ == '__main__':
@@ -63,5 +64,8 @@ if __name__ == '__main__':
 
     for _ in range(N):
         grid.append(list(map(int, input())))
+    count = solve(grid, N)
 
-    print(solve(grid, N))
+    print(len(count))
+    for _ in range(len(count)):
+        print(f'{heappop(count)}')
