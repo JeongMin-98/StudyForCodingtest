@@ -22,3 +22,8 @@ for i in range(2, num + 1):
         dp[i] = min(dp[i], dp[i // 3] + 1)
 
 print(dp[num])
+
+
+
+
+

@@ -7,10 +7,10 @@
     가로 길이가 10
     세로 높이가 3
 
-    x < 10/2 , y > 3/2 => 1 분면 => min(y-h, x-0)
-    x < 10/2 , y < 3/2 => 2 분면 => min(y, x)
-    x > 10/2 , y < 3/2 => 3 분면 => min(y, w-x)
-    x > 10/2 , y > 3/2 => 4 분면 => min(h-y, w-x)
+    num < 10/2 , y > 3/2 => 1 분면 => min(y-h, num-0)
+    num < 10/2 , y < 3/2 => 2 분면 => min(y, num)
+    num > 10/2 , y < 3/2 => 3 분면 => min(y, w-num)
+    num > 10/2 , y > 3/2 => 4 분면 => min(h-y, w-num)
 
 
 """
@@ -18,7 +18,7 @@
 def distance2line(x, y, w, h):
     """
 
-    :param x, y: 현수의 위치
+    :param num, y: 현수의 위치
     :param w, h: 직사각형의 오른쪽 위 꼭짓점
     :return: 어떤 사분면에 위치하였는지
         위 주석 참고, return 1,2,3,4

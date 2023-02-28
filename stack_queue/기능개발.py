@@ -47,12 +47,12 @@ print(solution([93,30,55],[1,30,5]))
 #     # progresses[i] >= 100=> work_done[i] = 1
 #     while len(progresses) > 0:
 #         if day == 1:
-#             day_progresses = [x + day * speed if work_done_bool == 0 else x
-#                               for x, speed, work_done_bool in
+#             day_progresses = [num + day * speed if work_done_bool == 0 else num
+#                               for num, speed, work_done_bool in
 #                               zip(progresses, speeds, work_done)]
 #         else:
-#             day_progresses = [x + day * speed if work_done_bool == 0 else cur_progress
-#                               for cur_progress, x, speed, work_done_bool in
+#             day_progresses = [num + day * speed if work_done_bool == 0 else cur_progress
+#                               for cur_progress, num, speed, work_done_bool in
 #                               zip(day_progresses, progresses, speeds, work_done)]
 #         work_done = [1 if progress >= 100 else 0 for progress in day_progresses]
 #

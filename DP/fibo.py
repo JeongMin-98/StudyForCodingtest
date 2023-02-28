@@ -8,14 +8,14 @@
 dp = [0] * 100
 
 # 하향식
-# def fibo(x):
-#     if x == 1 or x == 2:
+# def fibo(num):
+#     if num == 1 or num == 2:
 #         return 1
-#     if dp[x] != 0:
-#         return dp[x]
+#     if dp[num] != 0:
+#         return dp[num]
 #
-#     dp[x] = fibo(x-1) + fibo(x-2)
-#     return dp[x]
+#     dp[num] = fibo(num-1) + fibo(num-2)
+#     return dp[num]
 
 dp[0] = 1
 dp[1] = 2

@@ -9,10 +9,10 @@ def main():
     >>> a = ABorg()
     >>> a1 = A1Borg()
     >>> b = BBorg()
-    >>> a.x = 100
-    >>> a.x
-    >>> a1.x
-    >>> b.x
+    >>> a.num = 100
+    >>> a.num
+    >>> a1.num
+    >>> b.num
     """
 
 
