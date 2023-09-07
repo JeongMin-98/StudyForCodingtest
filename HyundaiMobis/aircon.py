@@ -28,15 +28,64 @@
     희망온도는 t1, t2 사이에 존재한다.
 
 """
+from copy import deepcopy
 
+def get_possible_setting(temperature, t1, t2, onboard):
+
+    times = len(onboard)
+
+    low = temperature - times
+    high = temperature + times
+
+    if t1 < low < t2:
+        t1 = low
+
+    if t1 < high < t2:
+        t2 = high
+
+    return t1, t2
+
+def find_getting_in_time(onboard):
+    get_out_status = 0
+    getting_in_time = None
+    for i in range(len(onboard)):
+        if onboard[i] != get_out_status:
+            getting_in_time = i
+            break
+    return getting_in_time
+
+def find_getting_out_time(onboard):
+
+    get_in_status = 1
+    getting_out_time = None
+    if onboard[-1] == get_in_status:
+        return
+
+    for i in range(len(onboard), -1, -1):
+        if onboard[i] == get_in_status:
+            getting_out_time = i+1
+            break
+
+    return getting_out_time
+
+def cal_electricity(temperature, t1, t2, a, b, onboard, desired):
+    for i in range(len(onboard)):
+        # 탑승
 
 def solution(temperature, t1, t2, a, b, onboard):
     answer = 0
 
-    # 희망 온도
+
+    #최소/최대 온도는 onboard의 길이에 영향을 받는다.
+    # ex) onboard => 7 쾌적한 최소 온도가 18도이더라도 현재 설정된 실내온도(실외온도와 동일)가 28도이기 때문에
+    # 28 - 7 = 21이다. 최대 온도는 28 + 7 이지만 최적의 실내 최대온도는 26도로 지정되어있기 떄문에 26도 설정된다.
+    # 가능한 범위 내에서 희망온도를 찾기위함이다.
+
+    t1, t2 = get_possible_setting(temperature, t1, t2, onboard)
+
     desired_temp = t1 + t2 // 2
 
     while t1 < desired_temp < t2:
-        for i in range(len(onboard)):
+        # 에너지 소비 계산
 
     return answer
