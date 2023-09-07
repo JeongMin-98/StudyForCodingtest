@@ -21,4 +21,22 @@
 
     에어컨이 꺼져있다면 전력을 소비하지않는다.
 
+    희망온도에 따라 전력의 소비량이 다르다.
+
+    희망온도를 통해 최적의 전력 소비량을 분석한다.
+
+    희망온도는 t1, t2 사이에 존재한다.
+
 """
+
+
+def solution(temperature, t1, t2, a, b, onboard):
+    answer = 0
+
+    # 희망 온도
+    desired_temp = t1 + t2 // 2
+
+    while t1 < desired_temp < t2:
+        for i in range(len(onboard)):
+
+    return answer
