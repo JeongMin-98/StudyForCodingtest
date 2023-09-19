@@ -13,23 +13,15 @@
 
 
 """
+import sys
 
+N, M = map(int, sys.stdin.readline().split())
+number = list(map(int, sys.stdin.readline().split()))
+dp = [0] * (N + 1)
 
-def cal_i_j(N, number, i, j):
-    dp = [0] * (N + 1)
+for i in range(1, N + 1):
+    dp[i] = dp[i - 1] + number[i - 1]
 
-    dp[1] = number[0]
-
-    for x in range(2, j + 1):
-        dp[x] = dp[x - 1] + number[x - 1]
-
-    return dp[j] - dp[i - 1]
-
-
-if __name__ == "__main__":
-    N, M = map(int, input().split())
-    number = list(map(int, input().split()))
-
-    for _ in range(M):
-        i, j = map(int, input().split())
-        print(cal_i_j(N, number, i, j))
+for _ in range(M):
+    i, j = map(int, sys.stdin.readline().split())
+    print(dp[j] - dp[i - 1])
